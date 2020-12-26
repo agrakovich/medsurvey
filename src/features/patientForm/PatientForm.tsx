@@ -1,4 +1,5 @@
-import React, { FunctionComponent } from 'react';
+import React, { useCallback, FunctionComponent } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Box, Theme } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -7,6 +8,15 @@ import TextField from '@material-ui/core/TextField';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+
+import {
+    patientFormSlice
+} from './patientFormSlice';
+import {
+    selectName,
+    selectSurname,
+    selectPatronymic
+} from './selectors';
 
 const useStyles = makeStyles((theme: Theme) => ({
 	wrapper: {
@@ -29,7 +39,24 @@ interface PatientFormProps {
 }
 
 export const PatientForm: FunctionComponent<PatientFormProps> = ({}: PatientFormProps) => {
-	const classes = useStyles();
+    const classes = useStyles();
+    const dispatch = useDispatch();
+
+    const name = useSelector(selectName);
+    const surName = useSelector(selectSurname);
+    const patronymic = useSelector(selectPatronymic);
+
+    const setName = useCallback(({ target: { value } }: React.ChangeEvent<{ value: string }>) => {
+		dispatch(patientFormSlice.actions.setName(value));
+    }, [dispatch]);
+
+    const setSurname = useCallback(({ target: { value } }: React.ChangeEvent<{ value: string }>) => {
+		dispatch(patientFormSlice.actions.setSurName(value));
+    }, [dispatch]);
+
+    const setPatronymic = useCallback(({ target: { value } }: React.ChangeEvent<{ value: string }>) => {
+		dispatch(patientFormSlice.actions.setPatronymic(value));
+    }, [dispatch]);
 
 	return (
     	<Box className={classes.wrapper}>
@@ -42,6 +69,8 @@ export const PatientForm: FunctionComponent<PatientFormProps> = ({}: PatientForm
                     id='surname'
                     label='Фамилия'
                     variant='outlined'
+                    value={ surName }
+                    onChange={ setSurname }
                     className={classes.formInput}
                 />
                 <TextField
@@ -49,6 +78,8 @@ export const PatientForm: FunctionComponent<PatientFormProps> = ({}: PatientForm
                     id='name'
                     label='Имя'
                     variant='outlined'
+                    value={ name }
+                    onChange={ setName }
                     className={classes.formInput}
                 />
                 <TextField
@@ -56,6 +87,8 @@ export const PatientForm: FunctionComponent<PatientFormProps> = ({}: PatientForm
                     id='patronymic'
                     label='Отчество'
                     variant='outlined'
+                    value={ patronymic }
+                    onChange={ setPatronymic }
                     className={classes.formInput}
                 />
             </Box>

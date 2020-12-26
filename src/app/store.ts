@@ -1,17 +1,19 @@
-import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
+import createSagaMiddleware from 'redux-saga';
 
-import counterReducer from '../features/counter/counterSlice';
+import { patientFormSlice } from '../features/patientForm/patientFormSlice';
+import { rootSaga } from '../rootSaga';
+
+const sagaMiddleware = createSagaMiddleware();
+const middleware = [...getDefaultMiddleware({ thunk: false }), sagaMiddleware];
 
 export const store = configureStore({
+  middleware,
   reducer: {
-    counter: counterReducer,
+    patientForm: patientFormSlice.reducer,
   },
 });
 
+sagaMiddleware.run(rootSaga);
+
 export type RootState = ReturnType<typeof store.getState>;
-export type AppThunk<ReturnType = void> = ThunkAction<
-  ReturnType,
-  RootState,
-  unknown,
-  Action<string>
->;
