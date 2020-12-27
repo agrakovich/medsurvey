@@ -6,10 +6,11 @@ interface PatientFormState {
     name: string,
     surname: string,
     patronymic: string,
-    dateOfBirth?: Date,
-    diagnosisForm: string,
-    diagnosisCourse: string,
-    diagnosisRespiratoryFailure: string,
+    dateOfBirth: string,
+    diagnosisForm?: number,
+    diagnosisCourse?: number,
+    diagnosisRespiratoryFailure?: number,
+    diagnosisDegreeOfControl?: number,
     lengthOfIllness?: number
 }
 
@@ -17,10 +18,11 @@ const initialState: PatientFormState = {
 	name: '',
     surname: '',
     patronymic: '',
-    dateOfBirth: undefined,
-    diagnosisForm: '',
-    diagnosisCourse: '',
-    diagnosisRespiratoryFailure: '',
+    dateOfBirth: '',
+    diagnosisForm: undefined,
+    diagnosisCourse: undefined,
+    diagnosisRespiratoryFailure: undefined,
+    diagnosisDegreeOfControl: undefined,
     lengthOfIllness: undefined
 };
 
@@ -37,17 +39,20 @@ export const patientFormSlice = createSlice({
         setPatronymic: (state: PatientFormState, { payload }: PayloadAction<string>) => {
 			state.patronymic = payload;
         },
-        setDateOfBirth: (state: PatientFormState, { payload }: PayloadAction<Date>) => {
+        setDateOfBirth: (state: PatientFormState, { payload }: PayloadAction<string>) => {
 			state.dateOfBirth = payload;
         },
-        setDiagnosisForm: (state: PatientFormState, { payload }: PayloadAction<string>) => {
+        setDiagnosisForm: (state: PatientFormState, { payload }: PayloadAction<number>) => {
 			state.diagnosisForm = payload;
         },
-        setDiagnosisCourse: (state: PatientFormState, { payload }: PayloadAction<string>) => {
+        setDiagnosisCourse: (state: PatientFormState, { payload }: PayloadAction<number>) => {
 			state.diagnosisCourse = payload;
         },
-        setDiagnosisRespiratoryFailure: (state: PatientFormState, { payload }: PayloadAction<string>) => {
+        setDiagnosisRespiratoryFailure: (state: PatientFormState, { payload }: PayloadAction<number>) => {
 			state.diagnosisRespiratoryFailure = payload;
+        },
+        setDiagnosisDegreeOfControl: (state: PatientFormState, { payload }: PayloadAction<number>) => {
+			state.diagnosisDegreeOfControl = payload;
         },
         setLengthOfIllness: (state: PatientFormState, { payload }: PayloadAction<number>) => {
 			state.lengthOfIllness = payload;

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Box, Theme } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
+import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
@@ -15,7 +16,12 @@ import {
 import {
     selectName,
     selectSurname,
-    selectPatronymic
+    selectPatronymic,
+    selectDateOfBirth,
+    selectDiagnosisCourse,
+    selectDiagnosisForm,
+    selectDiagnosisRespiratoryFailure,
+    selectDiagnosisDegreeOfControl
 } from './selectors';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -46,6 +52,13 @@ export const PatientForm: FunctionComponent<PatientFormProps> = ({}: PatientForm
     const surName = useSelector(selectSurname);
     const patronymic = useSelector(selectPatronymic);
 
+    const dateOfBirth = useSelector(selectDateOfBirth);
+
+    const diagnosisCourse = useSelector(selectDiagnosisCourse);
+    const diagnosisForm = useSelector(selectDiagnosisForm);
+    const diagnosisRespiratoryFailure = useSelector(selectDiagnosisRespiratoryFailure);
+    const diagnosisDegreeOfControl = useSelector(selectDiagnosisDegreeOfControl);
+
     const setName = useCallback(({ target: { value } }: React.ChangeEvent<{ value: string }>) => {
 		dispatch(patientFormSlice.actions.setName(value));
     }, [dispatch]);
@@ -56,6 +69,30 @@ export const PatientForm: FunctionComponent<PatientFormProps> = ({}: PatientForm
 
     const setPatronymic = useCallback(({ target: { value } }: React.ChangeEvent<{ value: string }>) => {
 		dispatch(patientFormSlice.actions.setPatronymic(value));
+    }, [dispatch]);
+
+    const setDateOfBirth = useCallback(({ target: { value } }: React.ChangeEvent<{ value: string }>) => {
+		dispatch(patientFormSlice.actions.setDateOfBirth(value));
+    }, [dispatch]);
+
+    const setDiagnosisCourse = useCallback((changeEvent: React.ChangeEvent<{ name?: string; value: unknown }>) => {
+        const { value } = changeEvent.target as { name?: string; value: number };
+		dispatch(patientFormSlice.actions.setDiagnosisCourse(value));
+    }, [dispatch]);
+
+    const setDiagnosisForm = useCallback((changeEvent: React.ChangeEvent<{ name?: string; value: unknown }>) => {
+        const { value } = changeEvent.target as { name?: string; value: number };
+		dispatch(patientFormSlice.actions.setDiagnosisForm(value));
+    }, [dispatch]);
+
+    const setDiagnosisRespiratoryFailure = useCallback((changeEvent: React.ChangeEvent<{ name?: string; value: unknown }>) => {
+        const { value } = changeEvent.target as { name?: string; value: number };
+		dispatch(patientFormSlice.actions.setDiagnosisRespiratoryFailure(value));
+    }, [dispatch]);
+
+    const setDiagnosisDegreeOfControl = useCallback((changeEvent: React.ChangeEvent<{ name?: string; value: unknown }>) => {
+        const { value } = changeEvent.target as { name?: string; value: number };
+		dispatch(patientFormSlice.actions.setDiagnosisDegreeOfControl(value));
     }, [dispatch]);
 
 	return (
@@ -97,16 +134,13 @@ export const PatientForm: FunctionComponent<PatientFormProps> = ({}: PatientForm
                     {'2. Укажите Ваш возраст'}
                 </Box>
                 <TextField
-                    id='age'
-                    label='Возраст'
-                    type='number'
+                    id='birthday'
+                    label='Дата рождения'
+                    type='date'
                     variant='outlined'
-                    inputProps={{
-                        min: 0,
-                        max: 250,
-                        step: 1,
-                        maxLength: 3
-                    }}
+                    value={dateOfBirth}
+                    onChange={setDateOfBirth}
+                    required           
                     InputLabelProps={{
                         shrink: true,
                     }}
@@ -124,8 +158,9 @@ export const PatientForm: FunctionComponent<PatientFormProps> = ({}: PatientForm
                             name: 'form',
                             id: 'bronchial-asthma-form',
                         }}
+                        value={diagnosisForm || 0}
+                        onChange={setDiagnosisForm}
                     >
-                        <option aria-label='None' value='' />
                         <option value={10}>{'Аллергическая (J 54.0)'}</option>
                         <option value={20}>{'Смешанная (J 54.8)'}</option>
                         <option value={30}>{'Неаллергическая (J 54.1)'}</option>
@@ -139,8 +174,9 @@ export const PatientForm: FunctionComponent<PatientFormProps> = ({}: PatientForm
                             name: 'course',
                             id: 'bronchial-asthma-course',
                         }}
+                        value={diagnosisCourse || 0}
+                        onChange={setDiagnosisCourse}
                     >
-                        <option aria-label='None' value='' />
                         <option value={10}>{'Лёгкое интермиттирующее'}</option>
                         <option value={20}>{'Лёгкое персистирующее'}</option>
                         <option value={30}>{'Средней тяжести'}</option>
@@ -155,8 +191,9 @@ export const PatientForm: FunctionComponent<PatientFormProps> = ({}: PatientForm
                             name: 'course',
                             id: 'bronchial-asthma-degree-of-control',
                         }}
+                        value={diagnosisDegreeOfControl || 0}
+                        onChange={setDiagnosisDegreeOfControl}
                     >
-                        <option aria-label='None' value='' />
                         <option value={10}>{'Контролируемая'}</option>
                         <option value={20}>{'Частично контролируемая'}</option>
                         <option value={30}>{'Неконтролируемая'}</option>
@@ -170,14 +207,16 @@ export const PatientForm: FunctionComponent<PatientFormProps> = ({}: PatientForm
                             name: 'course',
                             id: 'bronchial-asthma-respiratory-failure',
                         }}
+                        value={diagnosisRespiratoryFailure || 0}
+                        onChange={setDiagnosisRespiratoryFailure}
                     >
-                        <option aria-label='None' value='' />
                         <option value={10}>{'0'}</option>
                         <option value={20}>{'I'}</option>
                         <option value={30}>{'II'}</option>
                     </Select>
                 </FormControl>
             </Box>
+            <Button variant="contained" color="primary">Сохранить</Button>
         </Box>
 	);
 };

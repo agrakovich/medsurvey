@@ -1,7 +1,8 @@
 const { default: installExtension, REDUX_DEVTOOLS } = require('electron-devtools-installer');
 const path = require('path');
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcRenderer, ipcMain } = require('electron');
 const isDev = require('electron-is-dev');
+const sqlite3 = require('sqlite3');
 
 function createWindow() {
   // Create the browser window.
@@ -55,3 +56,15 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+const database = new sqlite3.Database("./user1.d./public/db.sqlite3", 
+  sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, 
+  (err) => { 
+    console.error('Database opening error: ', err);
+});
+
+ipcMain.on('asynchronous-message', (event, arg) => {
+  const sql = arg;
+  database.all(sql, (err, rows) => {
+      event.reply('asynchronous-reply', (err && err.message) || rows);
+  });
+});
