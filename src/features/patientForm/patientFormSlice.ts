@@ -56,6 +56,13 @@ export const patientFormSlice = createSlice({
         },
         setLengthOfIllness: (state: PatientFormState, { payload }: PayloadAction<number>) => {
 			state.lengthOfIllness = payload;
+        },
+        
+        savePatientFormDataRequest: () => {
+        },
+        savePatientFormDataSuccess: () => {
+        },
+        savePatientFormDataFailure: () => {
 		}
 	}
 });

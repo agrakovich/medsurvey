@@ -63,6 +63,10 @@ export const PatientForm: FunctionComponent<PatientFormProps> = ({}: PatientForm
 		dispatch(patientFormSlice.actions.setName(value));
     }, [dispatch]);
 
+    const savePatientFormData = useCallback(() => {
+		dispatch(patientFormSlice.actions.savePatientFormDataRequest());
+    }, [dispatch]);
+
     const setSurname = useCallback(({ target: { value } }: React.ChangeEvent<{ value: string }>) => {
 		dispatch(patientFormSlice.actions.setSurName(value));
     }, [dispatch]);
@@ -216,7 +220,7 @@ export const PatientForm: FunctionComponent<PatientFormProps> = ({}: PatientForm
                     </Select>
                 </FormControl>
             </Box>
-            <Button variant="contained" color="primary">Сохранить</Button>
+            <Button variant='contained' color='primary' onClick={savePatientFormData}>Сохранить</Button>
         </Box>
 	);
 };

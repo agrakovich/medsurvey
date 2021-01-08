@@ -56,7 +56,7 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
-const database = new sqlite3.Database("./user1.d./public/db.sqlite3", 
+const database = new sqlite3.Database("./public/db.sqlite3", 
   sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, 
   (err) => { 
     console.error('Database opening error: ', err);
