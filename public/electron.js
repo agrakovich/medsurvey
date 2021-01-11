@@ -1,6 +1,6 @@
-const { default: installExtension, REDUX_DEVTOOLS } = require('electron-devtools-installer');
+
 const path = require('path');
-const { app, BrowserWindow, ipcRenderer, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const isDev = require('electron-is-dev');
 const sqlite3 = require('sqlite3');
 
@@ -22,14 +22,6 @@ function createWindow() {
       ? 'http://localhost:3000'
       : `file://${path.join(__dirname, '../build/index.html')}`
   );
-
-  // Open the DevTools.
-  if (isDev) {
-    installExtension(REDUX_DEVTOOLS)
-      .then((name) => console.log(`Added Extension:  ${name}`))
-      .catch((err) => console.log('An error occurred: ', err));
-    win.webContents.openDevTools({ mode: 'detach' });
-  }
 }
 
 // This method will be called when Electron has finished
