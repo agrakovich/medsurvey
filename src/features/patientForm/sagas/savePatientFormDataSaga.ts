@@ -3,22 +3,14 @@ import { put, call, select, StrictEffect } from 'redux-saga/effects';
 
 import { send } from '../../../app/messageControl';
 
-import { patientFormSlice } from '../patientFormSlice';
-
-import {
-    selectName,
-    selectSurname,
-    selectPatronymic,
-    selectDateOfBirth
-} from '../selectors';
+import { patientFormViewSlice } from '../patientFormViewSlice';
+import { selectPatientData } from '../selectors';
+import type { PatientData } from '../PatientData';
 
 export function* savePatientFormDataSaga(): Generator<StrictEffect, void, any> {
 	try {
-        const name: string = yield select(selectName);
-        const surName: string = yield select(selectSurname);
-        const patronymic: string = yield select(selectPatronymic);
-
-        const dateOfBirth: string = yield select(selectDateOfBirth);
+        // const SqlString = require('sqlstring');
+        const patientData: PatientData = yield select(selectPatientData);
         
         // validation here
 
@@ -28,17 +20,22 @@ export function* savePatientFormDataSaga(): Generator<StrictEffect, void, any> {
                 name TEXT,
                 surname TEXT,
                 patronymic TEXT,
-                dateOfBirth TEXT
+                dateOfBirth TEXT,
+                dateOfAdding TEXT,
+                survey BLOB
             );`);
-        yield call(send, `INSERT INTO Patients (name, surname, patronymic, dateOfBirth) VALUES (
-            '${name}',
-            '${surName}',
-            '${patronymic}',
-            '${dateOfBirth}');`);
+        const dateOfAdding = new Date().toUTCString();
+        yield call(send, `INSERT INTO Patients (name, surname, patronymic, dateOfBirth, dateOfAdding, survey) VALUES (
+            '${patientData.name}',
+            '${patientData.surname}',
+            '${patientData.patronymic}',
+            '${patientData.dateOfBirth}',
+            '${dateOfAdding}',
+            '${JSON.stringify(patientData.survey)}');`);
 
-		yield put(patientFormSlice.actions.savePatientFormDataSuccess());
+		yield put(patientFormViewSlice.actions.savePatientFormDataSuccess());
 	} catch (e) {
 		console.log(e);
-		yield put(patientFormSlice.actions.savePatientFormDataFailure());
+		yield put(patientFormViewSlice.actions.savePatientFormDataFailure());
 	}
 }

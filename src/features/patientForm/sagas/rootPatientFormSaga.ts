@@ -1,9 +1,9 @@
 import { takeEvery } from 'redux-saga/effects';
 
-import { patientFormSlice } from '../patientFormSlice';
+import { patientFormViewSlice } from '../patientFormViewSlice';
 
 import { savePatientFormDataSaga } from './savePatientFormDataSaga';
 
 export function* rootPatientFormSaga() {
-	yield takeEvery(patientFormSlice.actions.savePatientFormDataRequest.type, savePatientFormDataSaga);
+	yield takeEvery(patientFormViewSlice.actions.savePatientFormDataRequest.type, savePatientFormDataSaga);
 }

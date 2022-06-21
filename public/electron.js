@@ -10,11 +10,15 @@ function createWindow() {
     width: 800,
     height: 600,
     webPreferences: {
-      nodeIntegration: true
+      devTools: false,
+      nodeIntegration: false,
+      preload: path.join(__dirname, 'preload.js'),
+      contextIsolation: false
     },
-    icon: './lungs.png'
+    icon: __dirname + '/lungs.png'
   });
 
+  win.removeMenu();
   // and load the index.html of the app.
   // win.loadFile('index.html');
   win.loadURL(
@@ -48,7 +52,7 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
-const database = new sqlite3.Database("./public/db.sqlite3", 
+const database = new sqlite3.Database('./public/db.sqlite3', 
   sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, 
   (err) => { 
     console.error('Database opening error: ', err);

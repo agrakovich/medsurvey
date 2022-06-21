@@ -1,5 +1,16 @@
-const electron = window.require('electron');
-const { ipcRenderer } = electron;
+// const electron = window.require('electron');
+// const { ipcRenderer } = electron;
+
+import { IpcRenderer } from 'electron';
+
+declare global {
+  interface Window {
+    ipcRenderer: IpcRenderer
+  }
+}
+
+const { ipcRenderer } = window;
+
 
 export function send(message: string) {
     return new Promise((resolve) => {
